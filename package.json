@@ -1,0 +1,20 @@
+{
+    "name": "sistema-de-reservas-de-mesas-en-restaurantes",
+    "version": "1.0.0",
+    "description": "Backend de implementación de un sistema de reservas de mesas en restaurantes, donde el sistema tendrá que mantener un registro de las mesas con sus coordenadas en cada restaurante y la capacidad de cada una de ellas.",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "Victor Gonzalez | Alex Gomez",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "pg": "^8.6.0",
+        "pg-hstore": "^2.3.3",
+        "sequelize": "^6.6.2"
+    }
+}
