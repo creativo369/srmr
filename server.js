@@ -7,7 +7,7 @@ const app = express();
 // app.use(...);
 const db = require("./app/models");
 db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop  re-sync db.");
+    console.log("Drop re-sync database.");
 });
 var corsOptions = {
     origin: "http://localhost:8081"
@@ -23,13 +23,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({ message: "Hola Mundo!." });
+    res.json({ message: "Hola Mundo!. Bienvenidos al Sistema de reservas de mesas en restaurantes." });
 });
 
-
-/* Aqui Agregamos las rutas del proyecto */
-// require("./app/routes/post.routes.js")(app);
-// require("./app/routes/comentario.routes.js")(app);
+/* === Aqui Agregamos las rutas del proyecto === */
+require("./app/routes/restaurantes.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

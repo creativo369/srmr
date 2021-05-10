@@ -1,11 +1,9 @@
-// Para inicializar el Sequelize 
-
-const dbConfig = require("../config/db.config.js"); // Exportamos el módulo de configuración donde
-// tenemos los parametros de configuración de nuestra base de datos,
+// === Exportamos el módulo de configuración donde tenemos los parametros de configuración de nuestra base de datos postgreSQL  === 
+const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize"); // Exportamos del (node_modules) la libreria de sequelize
 
-// Establecemos las configuraciones de inicialización de nuestro Sequelize y base de datos PostgreSQL 
+// === Establecemos las configuraciones de inicialización de nuestro Sequelize y base de datos PostgreSQL === 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     port: dbConfig.PORT,
@@ -19,32 +17,17 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     }
 });
 
-const db = {}; // Una variable constante para nuestra base de datos
+// === Una variable constante para nuestra base de datos === 
+const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Aqui inicializamos los sequelize de cada modelo, es decir utilizamos y hacemos referencia a las tablas de la base de datos 
-// db.posts = require("./post.model.js")(sequelize, Sequelize); // Establecemos nuestro modelo en el Sequelize 
-// db.comments = require("./comment.model.js")(sequelize, Sequelize);
-// db.tags = require("./tag.model.js")(sequelize, Sequelize);
-
-// Establecemos las relaciones  bidireccionales que hay entre Post y Comentario
-/* Usamos hasMany() para indicar que un Post tine muchos Comentarios, y belongsTo() para indicar que un Comentario solo 
-pertenece a un Post */
+// === Aqui inicializamos los sequelize y establecemos en el Sequelize los modelos, es decir utilizamos y hacemos referencia a las tablas de la base de datos ===  
+db.restaurantes = require("./restaurante.model.js")(sequelize, Sequelize);
 
 
-// db.posts.hasMany(db.comments, { as: "comentarios" }); // El hasMany() crea un atributo en la tabla de Comment y establece la relacion
-// Un post puede tener muchos comentarios es para ir 
-// en el sentido Post -> Comentarios ( OneToMany)
+// === Establecemos las relaciones que existiesen entre las tablas o modelos. ===  
 
-// Establecemos la relación bidireccional de comentario a post, porque un comentario solo puede estar en 1 posts o, 
-// varios comentarios solo pueden pertenecer a un posts ( ManyToOne )
-// Como la cardinalida es 1:N, osea muchos comentarios a un posts, por lo tanto la tabla o modelo Comentario es dueña de 
-// la relación por ser N, por lo tanto tiene la clave ajena o foranea que hace referencia Post
-/* db.comments.belongsTo(db.posts, {
-    foreignKey: "postId",
-    as: "post",
-});
- */
 
-module.exports = db; // exportamos nuestro base de datos con sequelize y nuestro modelo
+// === Exportamos nuestro base de datos con las tablas ya creadas === 
+module.exports = db;
