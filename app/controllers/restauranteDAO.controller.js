@@ -15,7 +15,7 @@ const Op = db.Sequelize.Op;
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) === 
 exports.crearRestaurante = (req, res) => {
     // Validar la solicitud 
-    if (!req.body.titulo) {
+    if (!req.body.nombre) {
         res.status(400).send({
             mensaje: "El contenido no puede estar vacío!"
         });
@@ -24,8 +24,8 @@ exports.crearRestaurante = (req, res) => {
 
     // Creamos un Restaurante
     const restaurante = {
-        nombre: req.body.titulo,
-        direccion: req.body.descripcion
+        nombre: req.body.nombre,
+        direccion: req.body.direccion
     };
 
     // Guardamos el restaurante en la base de datos 
@@ -41,7 +41,7 @@ exports.crearRestaurante = (req, res) => {
 
 exports.obtenerRestauranteByID = (req, res) => {
     const id = req.params.id;
-    Restaurante.findByPk(id).then(data => {
+    Restaurante.findByPk(id, { include: ["mesas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {
@@ -52,7 +52,7 @@ exports.obtenerRestauranteByID = (req, res) => {
 };
 
 exports.obtenerRestaurantes = (req, res) => {
-    Restaurante.findAll().then(data => {
+    Restaurante.findAll({ include: ["mesas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {

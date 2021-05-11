@@ -27,7 +27,9 @@ app.get("/", (req, res) => {
 });
 
 /* === Aqui Agregamos las rutas del proyecto === */
-require("./app/routes/restaurantes.routes.js")(app);
+require("./app/routes/restaurante.routes.js")(app);
+require("./app/routes/mesa.routes.js")(app);
+require("./app/routes/cliente.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
