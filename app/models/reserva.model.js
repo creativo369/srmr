@@ -1,24 +1,23 @@
 // Definimos nuestro modelo mensa como tabla en la base de datos 
 module.exports = (sequelize, Sequelize) => {
-    const Mesa = sequelize.define("Mesa", {
+    const Reserva = sequelize.define("Mesa", {
         id: {
             type: Sequelize.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
-        nombre: {
-            type: Sequelize.STRING
+        fecha: {
+            type: Sequelize.DATE
         },
-        posicion: {
-            type: Sequelize.GEOMETRY('POINT')
+        hora_inicio: {
+            type: Sequelize.BIGINT
         },
-        planta: {
-            type: Sequelize.BIGINT,
-            defaultValue: 1
+        hora_fin: {
+            type: Sequelize.BIGINT
         },
-        capacidad: {
+        cantidadSolicitada: { // Capacidad de la mesa o cantidad de comensales.
             type: Sequelize.BIGINT
         }
     });
-    return Mesa;
+    return Reserva;
 };

@@ -16,10 +16,15 @@ const Op = db.Sequelize.Op;
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearMesa = (req, res) => {
     // Creamos un objeto comentario
+
+    const point = {
+        type: 'Point',
+        coordinates: [req.body.posicionX, req.body.posicionY]
+    };
+
     const mesa = { // Lo que viene como JSON en la solicitud del postman 
         nombre: req.body.nombre,
-        posicionX: req.body.posicionX,
-        posicionY: req.body.posicionY,
+        posicion: point,
         planta: req.body.planta,
         capacidad: req.body.capacidad,
         fk_restauranteid: req.body.fk_restauranteid
