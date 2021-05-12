@@ -1,6 +1,6 @@
 // Definimos nuestro modelo mensa como tabla en la base de datos 
 module.exports = (sequelize, Sequelize) => {
-    const Reserva = sequelize.define("Mesa", {
+    const Reserva = sequelize.define("Reserva", {
         id: {
             type: Sequelize.BIGINT,
             primaryKey: true,

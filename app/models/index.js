@@ -56,7 +56,7 @@ db.mesas.hasMany(db.reservas, {
     as: "reservas"
 });
 
-db.cliente.hasMany(db.reservas, {
+db.clientes.hasMany(db.reservas, {
     foreignKey: 'fk_clienteid',
     sourceKey: 'id',
     as: "reservas"
