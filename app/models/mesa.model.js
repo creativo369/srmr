@@ -9,9 +9,11 @@ module.exports = (sequelize, Sequelize) => {
             nombre: {
                 type: Sequelize.STRING
             },
-            posicion: {
-                type: Sequelize.GEOMETRY,
-                allowNull: false
+            posicionX: {
+                type: Sequelize.BIGINT
+            },
+            posicionY: {
+                type: Sequelize.BIGINT
             },
             planta: {
                 type: Sequelize.BIGINT,

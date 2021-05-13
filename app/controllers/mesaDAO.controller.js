@@ -17,16 +17,17 @@ const Op = db.Sequelize.Op;
 exports.crearMesa = (req, res) => {
     // Creamos un objeto comentario
 
-    const point = {
-        type: 'Point',
-        coordinates: [req.body.posicionX, req.body.posicionY]
-            /*,
-                    crs: { type: 'name', properties: { name: 'EPSG:4326' } }*/
-    };
+    /*  const point = {
+         type: 'Point',
+         coordinates: []
+             ,
+                     crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+     }; */
 
     const mesa = { // Lo que viene como JSON en la solicitud del postman 
         nombre: req.body.nombre,
-        posicion: point,
+        posicionX: req.body.posicionX,
+        posicionY: req.body.posicionY,
         planta: req.body.planta,
         capacidad: req.body.capacidad,
         fk_restauranteid: req.body.fk_restauranteid

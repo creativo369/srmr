@@ -4,7 +4,7 @@
 
 ### Custom ignore Personal folders or file ###
 notes.txt
-
+.idea/
 ### Node ###
 # Logs
 logs
