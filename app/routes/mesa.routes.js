@@ -20,5 +20,5 @@ module.exports = app => {
     // Borrar todas las mesas 
     router.delete("/", mesas.borrarMesas);
 
-    app.use("/restaurantes/mesas", router);
+    app.use("/mesas", router);
 };

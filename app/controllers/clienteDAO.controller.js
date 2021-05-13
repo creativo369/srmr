@@ -34,7 +34,7 @@ exports.crearCliente = (req, res) => {
     // Guardamos el restaurante en la base de datos 
     Cliente.create(cliente).then(data => {
         // console.log(data);
-        res.send(data);
+        res.status(200).send();
     }).catch(err => {
         res.status(500).send({
             mensaje: err.mensaje || "Ocurrio algun error mientras se creaba el registro de un cliente. Eso es todo lo que sabemos!"
@@ -52,6 +52,21 @@ exports.obtenerClienteByID = (req, res) => {
             mensaje: "Ocurrio un error al obtener el cliente con el id = " + id
         });
     });
+};
+
+exports.obtenerClienteByCI = (req, res) => {
+    const ci = req.params.cedula;
+    Cliente.findAll({
+        where: {
+            cedula: ci
+        }
+    }).then(data => {
+        if (!data.length) {
+            res.status(404).send();
+        } else {
+            res.status(200).send();
+        }
+    })
 };
 
 exports.obtenerClientes = (req, res) => {

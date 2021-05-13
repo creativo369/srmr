@@ -27,6 +27,7 @@ db.restaurantes = require("./restaurante.model.js")(sequelize, Sequelize);
 db.mesas = require("./mesa.model.js")(sequelize, Sequelize);
 db.clientes = require("./cliente.model.js")(sequelize, Sequelize);
 db.reservas = require("./reserva.model.js")(sequelize, Sequelize);
+db.rangos = require("./rango.model.js")(sequelize, Sequelize);
 
 
 // === Establecemos las relaciones que existiesen entre las tablas o modelos. ===  
@@ -53,7 +54,7 @@ db.restaurantes.hasMany(db.reservas, {
 db.mesas.hasMany(db.reservas, {
     foreignKey: 'fk_mesaid',
     sourceKey: 'id',
-    as: "reservas"
+    as: "reservas_mesas"
 });
 
 db.clientes.hasMany(db.reservas, {
@@ -62,5 +63,10 @@ db.clientes.hasMany(db.reservas, {
     as: "reservas"
 });
 
+db.rangos.hasMany(db.reservas, {
+    foreignKey: 'fk_rangoid',
+    sourceKey: 'id',
+    as: "rangos_reservas"
+});
 // === Exportamos nuestro base de datos con las tablas ya creadas === 
 module.exports = db;
