@@ -20,6 +20,8 @@ exports.crearMesa = (req, res) => {
     const point = {
         type: 'Point',
         coordinates: [req.body.posicionX, req.body.posicionY]
+            /*,
+                    crs: { type: 'name', properties: { name: 'EPSG:4326' } }*/
     };
 
     const mesa = { // Lo que viene como JSON en la solicitud del postman 
@@ -29,8 +31,7 @@ exports.crearMesa = (req, res) => {
         capacidad: req.body.capacidad,
         fk_restauranteid: req.body.fk_restauranteid
     };
-
-    // Función que guarda el comentario en la base de datos 
+    // Función que guarda la mesa en la base de datos 
     Mesa.create(mesa).then(data => {
         res.send(data);
     }).catch(err => {
