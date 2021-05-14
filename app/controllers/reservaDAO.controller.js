@@ -26,7 +26,7 @@ exports.crearReserva = (req, res) => {
 };
 
 
-exports.reservasMesas = (req, res) => {
+exports.mesasDisponibles = (req, res) => {
     const restauranteid = req.query.restaurante;
     const fecha = req.query.fecha;
     const rangoid = req.query.rango;
@@ -34,8 +34,8 @@ exports.reservasMesas = (req, res) => {
     Mesa.findAll({
         where:{ 
             fk_restauranteid:restauranteid,
-            '$mesas_reservas.fecha$': { [Op.ne]: fecha }/* ,
-            '$mesas_reservas.fk_rangoid$': { [Op.ne]: rangoid } */
+            '$mesas_reservas.fecha$': { [Op.ne]: fecha },
+            '$mesas_reservas.fk_rangoid$': { [Op.ne]: rangoid }
             },
         include:["mesas_reservas"]
     }).then(data => {
