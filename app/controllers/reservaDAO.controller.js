@@ -1,5 +1,6 @@
 const db = require("../models");
 const Reserva = db.reservas;
+const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
 
 
@@ -25,23 +26,18 @@ exports.crearReserva = (req, res) => {
 };
 
 
-exports.reservas = (req, res) => {
-    const restaurante = req.query.restaurante;
+exports.reservasMesas = (req, res) => {
+    const restauranteid = req.query.restaurante;
     const fecha = req.query.fecha;
-    const rango = req.query.rango;
+    const rangoid = req.query.rango;
 
-    Reserva.findAll({
-        where: {
-            fk_restauranteid: {
-                $ne: restaurante
+    Mesa.findAll({
+        where:{ 
+            fk_restauranteid:restauranteid,
+            '$mesas_reservas.fecha$': { [Op.ne]: fecha }/* ,
+            '$mesas_reservas.fk_rangoid$': { [Op.ne]: rangoid } */
             },
-            fecha: {
-                $ne: fecha
-            },
-            fk_rangoid: {
-                $ne: rango
-            }
-        }
+        include:["mesas_reservas"]
     }).then(data => {
         res.send(data);
     }).catch(err => {

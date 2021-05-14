@@ -39,7 +39,7 @@ exports.crearRango = (req, res) => {
 
 exports.obtenerRangoByID = (req, res) => {
     const id = req.params.id;
-    Rango.findByPk(id, { include: ["rangos_reservas"] }).then(data => {
+    Rango.findByPk(id, { include: ["rango_reservas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {
@@ -50,7 +50,7 @@ exports.obtenerRangoByID = (req, res) => {
 };
 
 exports.obtenerRangos = (req, res) => {
-    Rango.findAll({ include: ["rangos_reservas"] }).then(data => {
+    Rango.findAll({ include: ["rango_reservas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {

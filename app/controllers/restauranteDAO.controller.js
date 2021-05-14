@@ -41,7 +41,7 @@ exports.crearRestaurante = (req, res) => {
 
 exports.obtenerRestauranteByID = (req, res) => {
     const id = req.params.id;
-    Restaurante.findByPk(id, { include: ["mesas"] }).then(data => {
+    Restaurante.findByPk(id, { include: ["mesas", "reservas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {
@@ -52,7 +52,7 @@ exports.obtenerRestauranteByID = (req, res) => {
 };
 
 exports.obtenerRestaurantes = (req, res) => {
-    Restaurante.findAll({ include: ["mesas"] }).then(data => {
+    Restaurante.findAll({ include: ["mesas", "reservas"] }).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {

@@ -4,5 +4,7 @@ module.exports = app => {
 
     router.post("/", reservas.crearReserva);
 
+    router.get("/", reservas.reservasMesas);
+    
     app.use("/reservas", router);
 };

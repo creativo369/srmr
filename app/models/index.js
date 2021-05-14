@@ -54,19 +54,19 @@ db.restaurantes.hasMany(db.reservas, {
 db.mesas.hasMany(db.reservas, {
     foreignKey: 'fk_mesaid',
     sourceKey: 'id',
-    as: "reservas_mesas"
+    as: "mesas_reservas"
 });
 
 db.clientes.hasMany(db.reservas, {
     foreignKey: 'fk_clienteid',
     sourceKey: 'id',
-    as: "reservas"
+    as: "cliente_reservas"
 });
 
 db.rangos.hasMany(db.reservas, {
     foreignKey: 'fk_rangoid',
     sourceKey: 'id',
-    as: "reservas"
+    as: "rango_reservas"
 });
 // === Exportamos nuestro base de datos con las tablas ya creadas === 
 module.exports = db;

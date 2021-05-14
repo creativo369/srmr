@@ -44,7 +44,7 @@ exports.crearMesa = (req, res) => {
 
 exports.obtenerMesaByID = (req, res) => {
     const id = req.params.id;
-    Mesa.findByPk(id).then(data => {
+    Mesa.findByPk(id,{ include: ["mesas_reservas"] }).then(data => {
         res.send(data);
     }).catch(err => {
         res.status(500).send({
@@ -54,7 +54,7 @@ exports.obtenerMesaByID = (req, res) => {
 };
 
 exports.obtenerMesas = (req, res) => {
-    Mesa.findAll({ include: ["reservas_mesas"] }).then(data => {
+    Mesa.findAll({ include: ["mesas_reservas"] }).then(data => {
         res.send(data);
     }).catch(err => {
         res.status(500).send({

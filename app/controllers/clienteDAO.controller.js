@@ -44,7 +44,7 @@ exports.crearCliente = (req, res) => {
 
 exports.obtenerClienteByID = (req, res) => {
     const id = req.params.id;
-    Cliente.findByPk(id).then(data => {
+    Cliente.findByPk(id, include["cliente_reservas"]).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {
@@ -60,7 +60,7 @@ exports.obtenerClienteByCI = (req, res) => {
         where: {
             cedula: ci
         }
-    }).then(data => {
+    }, include["cliente_reservas"]).then(data => {
         if (!data.length) {
             res.status(404).send();
         } else {
@@ -70,7 +70,7 @@ exports.obtenerClienteByCI = (req, res) => {
 };
 
 exports.obtenerClientes = (req, res) => {
-    Cliente.findAll().then(data => {
+    Cliente.findAll( include["cliente_reservas"]).then(data => {
         // console.log(data);
         res.send(data);
     }).catch(err => {

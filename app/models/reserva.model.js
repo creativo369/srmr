@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true
         },
         fecha: {
-            type: Sequelize.DATE
+            type: Sequelize.DATEONLY,
         },
         cantidadSolicitada: { // Capacidad de la mesa o cantidad de comensales.
             type: Sequelize.BIGINT

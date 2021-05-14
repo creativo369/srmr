@@ -10,5 +10,6 @@
             "password": "admin",
             "name": "geekpy"
         }
-    ]
+    ],
+    "npm-scripts.showStartNotification": false
 }
