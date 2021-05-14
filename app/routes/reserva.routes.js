@@ -6,5 +6,7 @@ module.exports = app => {
 
     router.get("/", reservas.mesasDisponibles);
     
+    router.get("/lista", reservas.listaReservas);
+
     app.use("/reservas", router);
 };

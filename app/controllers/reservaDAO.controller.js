@@ -46,3 +46,28 @@ exports.mesasDisponibles = (req, res) => {
         });
     });
 };
+
+
+exports.listaReservas = (req, res) => {
+    const restaurante = req.query.restaurante;
+    const fecha = req.query.fecha;
+    const cliente = req.query.cliente;
+
+    Reserva.findAll({
+        where:{ 
+            fk_restauranteid:restaurante,
+            fecha:fecha,
+            //fk_clienteid: {[Op.or]:cliente}
+            },
+        order: [
+                ['fk_rangoid', 'ASC'],
+                ['fk_mesaid', 'ASC'],
+            ]
+    }).then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            mensaje: err.mensaje || "Ocurrio un error mientras se trata de obtener todas las reservas."
+        });
+    });
+};
