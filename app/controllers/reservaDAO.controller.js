@@ -25,13 +25,23 @@ exports.crearReserva = (req, res) => {
 };
 
 
-/* exports.reservas = (req, res) => {
+exports.reservas = (req, res) => {
+    const restaurante = req.query.restaurante;
+    const fecha = req.query.fecha;
+    const rango = req.query.rango;
+
     Reserva.findAll({
         where: {
-            fk_restauranteid: req.body.id_restaurante,
-            fecha: req.body.fecha
-        },
-        include: ["reservas_mesas"]
+            fk_restauranteid: {
+                $ne: restaurante
+            },
+            fecha: {
+                $ne: fecha
+            },
+            fk_rangoid: {
+                $ne: rango
+            }
+        }
     }).then(data => {
         res.send(data);
     }).catch(err => {
@@ -39,4 +49,4 @@ exports.crearReserva = (req, res) => {
             mensaje: err.mensaje || "Ocurrio un error mientras se trata de obtener todas las mesas."
         });
     });
-}; */
+};

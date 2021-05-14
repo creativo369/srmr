@@ -66,7 +66,7 @@ db.clientes.hasMany(db.reservas, {
 db.rangos.hasMany(db.reservas, {
     foreignKey: 'fk_rangoid',
     sourceKey: 'id',
-    as: "rangos_reservas"
+    as: "reservas"
 });
 // === Exportamos nuestro base de datos con las tablas ya creadas === 
 module.exports = db;
