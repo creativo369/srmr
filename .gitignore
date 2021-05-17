@@ -5,7 +5,9 @@
 ### Custom ignore Personal folders or file ###
 notes.txt
 .idea/
+.idea
 .vscode/
+.vscode
 ### Node ###
 # Logs
 logs
