@@ -1,0 +1,41 @@
+.form-control {
+  width: 35%;
+  display: inline;
+  /* border: 2px solid red; */
+  margin: 30px;
+}
+
+.datepicker {
+  width: 70%;
+}
+
+input {
+  /* border: 2px solid red; */
+  /* margin: 0 auto; */
+}
+
+.date-time {
+  /* background-color: red; */
+  width: 30%;
+  margin: 0 auto;
+  /* float: left; */
+  /* padding: 10px; */
+  /* border: 2px solid red; */
+}
+
+.test {
+  /* background-color: grey; */
+  text-align: center;
+  /* align-content: space-between; */
+}
+
+.form-mesas,
+.lista-mesas {
+  float: left;
+  /* background: #ccc; */
+  display: inline-block;
+  /* padding: 2%; */
+  width: 500px;
+  margin: auto 20px;
+  align-content: center;
+}

@@ -1,0 +1,23 @@
+.my-card {
+  border: 1px solid grey;
+  border-radius: 5px;
+  margin-top: 25px;
+  padding: 5px 10px;
+  list-style-type: None;
+  text-align: left;
+  opacity: 0.8;
+}
+
+.my-card:hover {
+  cursor: pointer;
+  box-shadow: 5px 10px 2px #888888;
+  opacity: 1;
+  transition: 0.2s;
+}
+
+.selected-table {
+  text-align: left;
+  margin-top: 20px;
+  /* border: 1px solid green; */
+  padding: 5px;
+}
