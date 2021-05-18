@@ -11,6 +11,13 @@ module.exports = (sequelize, Sequelize) => {
         },
         cantidadSolicitada: { // Capacidad de la mesa o cantidad de comensales.
             type: Sequelize.BIGINT
+        },
+        horaInicio:{
+            type: Sequelize.BIGINT
+        },
+        
+        horaFin:{
+            type: Sequelize.BIGINT
         }
     });
     return Reserva;
