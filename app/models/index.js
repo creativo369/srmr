@@ -27,8 +27,6 @@ db.restaurantes = require("./restaurante.model.js")(sequelize, Sequelize);
 db.mesas = require("./mesa.model.js")(sequelize, Sequelize);
 db.clientes = require("./cliente.model.js")(sequelize, Sequelize);
 db.reservas = require("./reserva.model.js")(sequelize, Sequelize);
-db.rangos = require("./rango.model.js")(sequelize, Sequelize);
-
 
 // === Establecemos las relaciones que existiesen entre las tablas o modelos. ===  
 
@@ -38,12 +36,6 @@ db.restaurantes.hasMany(db.mesas, {
     sourceKey: 'id',
     as: "mesas"
 });
-// O otra alternativa podria ser
-// Esta relación va agregar un atributo a la tabla Mesa llamada fk_restauranteid  
-/* mesas.belonsTo(Restaurante,{
-    foreignKey:'fk_restauranteid',
-    sourceKey:'id'
-}); */
 
 db.restaurantes.hasMany(db.reservas, {
     foreignKey: 'fk_restauranteid',
@@ -63,10 +55,5 @@ db.clientes.hasMany(db.reservas, {
     as: "cliente_reservas"
 });
 
-db.rangos.hasMany(db.reservas, {
-    foreignKey: 'fk_rangoid',
-    sourceKey: 'id',
-    as: "rango_reservas"
-});
 // === Exportamos nuestro base de datos con las tablas ya creadas === 
 module.exports = db;

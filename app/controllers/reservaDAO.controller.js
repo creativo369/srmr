@@ -13,7 +13,8 @@ exports.crearReserva = (req, res) => {
         fk_restauranteid: req.body.fk_restauranteid,
         fk_mesaid: req.body.fk_mesaid,
         fk_clienteid: req.body.fk_clienteid,
-        fk_rangoid: req.body.fk_rangoid
+        horaInicio: req.body.hora_inicio,
+        horaFin: req.body.hora_fin
     };
     // Función que guarda la mesa en la base de datos 
     Reserva.create(reserva).then(data => {
@@ -25,21 +26,50 @@ exports.crearReserva = (req, res) => {
     });
 };
 
-
 exports.mesasDisponibles = (req, res) => {
     const restauranteid = req.query.restaurante;
     const fecha = req.query.fecha;
-    const rangoid = req.query.rango;
-
-    Mesa.findAll({
+    const hora_Inicio = req.query.hora_inicio;
+    const hora_Fin = req.query.hora_fin;
+    
+    Reserva.findAll({
         where:{ 
             fk_restauranteid:restauranteid,
-            '$mesas_reservas.fecha$': { [Op.ne]: fecha },
-            '$mesas_reservas.fk_rangoid$': { [Op.ne]: rangoid }
-            },
-        include:["mesas_reservas"]
-    }).then(data => {
-        res.send(data);
+            fecha: fecha,
+            [Op.or]:[
+                { horaInicio: hora_Inicio }, 
+                { horaFin:hora_Fin},
+                { horaInicio:
+                    {
+                        [Op.gt]:hora_Inicio,
+                        [Op.lt]:hora_Fin
+                    }
+                },
+                { horaFin:
+                    {
+                        [Op.gt]:hora_Inicio,
+                        [Op.lt]:hora_Fin
+                    }
+                }
+            ]
+        }
+    }).then(data =>  {
+        let total_mesas =  Mesa.findAll({
+            where:{
+                fk_restauranteid:restauranteid
+            }
+        });
+        
+        let mesas_disponibles = [];
+
+        total_mesas.then(tm=>{
+            tm.forEach(mesa => {
+                if (!data.some(reserva => reserva.fk_mesaid == mesa.id)){
+                    mesas_disponibles = [...mesas_disponibles, mesa];
+                }
+            });
+            res.send(mesas_disponibles);
+        });
     }).catch(err => {
         res.status(500).send({
             mensaje: err.mensaje || "Ocurrio un error mientras se trata de obtener todas las mesas."
@@ -47,24 +77,10 @@ exports.mesasDisponibles = (req, res) => {
     });
 };
 
-
-        where:{ 
-            fk_restauranteid:restauranteid,
-            fecha: fecha,
-            hora_inicio: {
-
-            },
-            hora_fin: {
-
-            }
-        },
-
-
-
 exports.listaReservas = (req, res) => {
     const restaurante = req.query.restaurante;
     const fecha = req.query.fecha;
-    const cliente = req.query.cliente;
+    //const cliente = req.query.cliente;
 
     Reserva.findAll({
         where:{ 
@@ -73,7 +89,7 @@ exports.listaReservas = (req, res) => {
             //fk_clienteid: {[Op.or]:cliente}
             },
         order: [
-                ['fk_rangoid', 'ASC'],
+                ['horaInicio', 'ASC'],
                 ['fk_mesaid', 'ASC'],
             ]
     }).then(data => {
