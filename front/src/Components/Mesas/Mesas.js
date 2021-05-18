@@ -9,16 +9,40 @@ import Registro from '../Registro/Registro';
 class Mesas extends Component {
 
     selectedTable = null;
+    constructor(props) {
+        super();
+        this.state = {
+            data: [],
+            fetched: false,
+            selected: '',
+            restaurante:props.restaurante,
+            fecha: props.fecha,
+            hora_inicio: props.hora_inicio,
+            hora_fin: props.hora_fin
+        }
+    }
 
-    state = {
-        data: [],
-        fetched: false,
-        selected: '',
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
     }
 
     componentDidMount() {
         const number = 1;
-        axios.get("http://localhost:8080/reservas?restaurante="+restaurante+"&fecha="+fecha+"&rango="+rango)
+        console.log("fecha: " + this.formatDate(this.state.fecha));
+       
+        axios.get("http://localhost:8080/reservas?restaurante="+this.state.restaurante+"&fecha="+this.formatDate(this.state.fecha)+
+                    "&hora_inicio="+this.state.hora_inicio+"&hora_fin="+this.state.hora_fin)
             .then(response => {
                 console.log(response);
                 this.setState({

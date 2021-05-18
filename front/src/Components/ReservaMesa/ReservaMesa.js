@@ -17,8 +17,6 @@ class ReservaMesa extends Component {
 
     state = {
         idRestaurante: '',
-        horaMin:24,
-        horaMax:11,
         fecha: new Date(),
         mesasDisponibles:[],
         fetching:false,
@@ -40,8 +38,8 @@ class ReservaMesa extends Component {
 
         let checked = [];
         
-        console.log("min:" + min);
-        console.log("max:" + max);
+        // console.log("min:" + min);
+        // console.log("max:" + max);
 
         checkboxes.forEach(checkbox => {
             if (checkbox.checked ) {
@@ -59,10 +57,10 @@ class ReservaMesa extends Component {
         let checked = this.getChecked();
         console.log(checked)
         this.min = Math.min(...checked);
-        this.max = Math.max(...checked);
+        this.max = Math.max(...checked) +1;
 
-        // console.log("min:" + min);
-        // console.log("max:" + max);
+        console.log("min:" + this.min);
+        console.log("max:" + this.max);
 
         let checkboxes = document.querySelectorAll("input[type='checkbox']");
         checkboxes.forEach( checkbox => {
@@ -75,6 +73,7 @@ class ReservaMesa extends Component {
     createCheckboxes = () => {
         let arrayCheckboxes = [];
         for (let horas = 12; horas < 24; horas++ ) {
+            if (horas > 14 && horas < 19) continue
             arrayCheckboxes.push(
                 <div key={horas}><input className="form-check-input" type="checkbox" value={horas} onChange={(e) => this.checkTime(e)}/>
                 <label className="form-check-label">{horas}hs a {horas + 1}hs</label></div>
@@ -120,7 +119,12 @@ class ReservaMesa extends Component {
         }else{
             console.log('Desplegando lista de mesas...');
 
-            listaMesas = <Mesas />
+            listaMesas = <Mesas 
+                            restaurante={this.state.idRestaurante}
+                            fecha={this.state.fecha}
+                            hora_inicio={this.min}
+                            hora_fin={this.max}
+                        />
         }
 
         return (

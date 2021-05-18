@@ -11,7 +11,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:8080"
 };
 
 app.use(cors(corsOptions));
