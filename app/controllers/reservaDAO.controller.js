@@ -48,6 +48,19 @@ exports.mesasDisponibles = (req, res) => {
 };
 
 
+        where:{ 
+            fk_restauranteid:restauranteid,
+            fecha: fecha,
+            hora_inicio: {
+
+            },
+            hora_fin: {
+
+            }
+        },
+
+
+
 exports.listaReservas = (req, res) => {
     const restaurante = req.query.restaurante;
     const fecha = req.query.fecha;
