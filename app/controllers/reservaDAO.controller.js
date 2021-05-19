@@ -14,7 +14,8 @@ exports.crearReserva = (req, res) => {
                 cedula: req.body.clienteCI
             }
         }).then(data => {
-            console.log(data.id); 
+            if(data){
+                console.log(data.id); 
             const reserva = { // Lo que viene como JSON en la solicitud del postman 
                 fecha: req.body.fecha,
                 cantidadSolicitada: req.body.cantidadSolicitada,
@@ -32,6 +33,10 @@ exports.crearReserva = (req, res) => {
                     mensaje: err.mensaje || "Ocurrio algun error mientras se crea la reserva."
                 });
             });
+            }else{
+                res.status(404).send();
+            }
+            
         });    
 };
 
