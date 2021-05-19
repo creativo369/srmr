@@ -66,26 +66,27 @@ class Mesas extends Component {
     }
 
     render(){
-
         return(
             <div>
-                { this.state.fetched ?
-                    this.state.data.map((mesa, key) => {
-                        return (
-                            <div key={key} className="my-card" onClick={() => this.getValues({mesa}) }>
-                            <li><strong>id:</strong> {mesa.id}</li>
-                            <li><strong>nombre:</strong> {mesa.nombre}</li>
-                            <li><strong>Capacidad:</strong> {mesa.capacidad}</li>
-                            </div>
-                        )
-                    }) :
-                    <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={100}
-                    width={100}
-                    />
-                }
+                <div style={{maxHeight:'365px', overflowY:'scroll'}}>
+                    { this.state.fetched ?
+                        this.state.data.map((mesa, key) => {
+                            return (
+                                <div key={key} className="my-card" onClick={() => this.getValues({mesa}) }>
+                                <li><strong>id:</strong> {mesa.id}</li>
+                                <li><strong>nombre:</strong> {mesa.nombre}</li>
+                                <li><strong>Capacidad:</strong> {mesa.capacidad}</li>
+                                </div>
+                            )
+                        }) :
+                        <Loader
+                        type="ThreeDots"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                        />
+                    }
+                </div>
                 <div className="selected-table">
                     <strong>Mesa seleccionada:</strong> {this.selectedTable }
                     <button style={{float: 'right'}} type="button" className="btn btn-primary" onClick={()=>this.setState({confirmado: true})}>Confirmar mesa</button>
