@@ -9,6 +9,7 @@ import Registro from '../Registro/Registro';
 class Mesas extends Component {
 
     selectedTable = null;
+    confirmado = false;
     constructor(props) {
         super();
         this.state = {
@@ -16,9 +17,11 @@ class Mesas extends Component {
             fetched: false,
             selected: '',
             restaurante:props.restaurante,
-            fecha: props.fecha,
+            fecha: this.formatDate(props.fecha),
             hora_inicio: props.hora_inicio,
-            hora_fin: props.hora_fin
+            hora_fin: props.hora_fin,
+            cantidadMesa:'',
+            confirmado: false
         }
     }
 
@@ -54,12 +57,15 @@ class Mesas extends Component {
 
     getValues = props => {
         this.selectedTable = props.mesa.id;
-        this.setState({selected: true})
+        this.setState({cantidadMesa: props.mesa.capacidad});
+        this.setState({selected: true});
+    }
+
+    confirmarMesa = () => {
+        this.confirmado = true;
     }
 
     render(){
-        //id, name, email, body
-        //nombre, posicionX, posicionY, planta, capacidad
 
         return(
             <div>
@@ -82,8 +88,18 @@ class Mesas extends Component {
                 }
                 <div className="selected-table">
                     <strong>Mesa seleccionada:</strong> {this.selectedTable }
+                    <button style={{float: 'right'}} type="button" className="btn btn-primary" onClick={()=>this.setState({confirmado: true})}>Confirmar mesa</button>
                 </div>
-                <Registro selectedTable={this.state.selected}/>
+                { this.state.confirmado === true ?  
+                    <Registro 
+                        hora_inicio = {this.props.hora_inicio}
+                        hora_fin = {this.props.hora_fin}
+                        restauranteid = {this.props.restaurante}
+                        fecha = {this.state.fecha}
+                        mesaid = {this.selectedTable}
+                        cantidad = {this.state.cantidadMesa}
+                    /> : <></>
+                }
             </div>
         );
     }

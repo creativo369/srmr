@@ -7,6 +7,7 @@ class Registro extends Component {
 
     constructor(props) {
         super();
+        console.log(props);
         this.state = {
             mesaId: props.selectedTable,
             ci:'',
@@ -34,9 +35,20 @@ class Registro extends Component {
 
     registrarReserva = () => {
         console.log(this.state.ci);
-        this.clienteExiste();
+        // this.clienteExiste();
+
+        let payload = {
+            fecha: this.props.fecha,
+            hora_inicio: this.props.hora_inicio,
+            hora_fin: this.props.hora_fin,
+            cantidadSolicitada: this.props.cantidad,
+            fk_restauranteid: this.props.restauranteid,
+            clienteCI: this.state.clienteCI,
+            fk_mesaid: this.props.mesaid
+        }
+
         axios
-            .post("https://jsonplaceholder.typicode.com/posts", this.state)
+            .post("http://localhost:8080/reservas", payload)
             .then(response => {
                 console.log(response);
             }).catch(error => {

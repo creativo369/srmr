@@ -1,4 +1,5 @@
 const db = require("../models");
+const { obtenerClienteByCI } = require("./clienteDAO.controller");
 const Reserva = db.reservas;
 const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
@@ -7,6 +8,9 @@ const Op = db.Sequelize.Op;
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearReserva = (req, res) => {
+
+    const fk_clienteid = obtenerClienteByCI(req.body.clienteCI).id; //para obtener el id del cliente
+
     const reserva = { // Lo que viene como JSON en la solicitud del postman 
         fecha: req.body.fecha,
         cantidadSolicitada: req.body.cantidadSolicitada,
