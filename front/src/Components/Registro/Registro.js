@@ -43,7 +43,7 @@ class Registro extends Component {
             hora_fin: this.props.hora_fin,
             cantidadSolicitada: this.props.cantidad,
             fk_restauranteid: this.props.restauranteid,
-            clienteCI: this.state.clienteCI,
+            clienteCI: this.state.ci,
             fk_mesaid: this.props.mesaid
         }
 

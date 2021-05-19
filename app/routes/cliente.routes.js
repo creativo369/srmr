@@ -9,7 +9,7 @@ module.exports = app => {
     router.get("/:id", clientes.obtenerClienteByID);
 
     // Obtener un solo cliente by CI
-    router.get("/cliente/:cedula", clientes.obtenerClienteByCI);
+    // router.get("/cliente/:cedula", clientes.obtenerClienteByCI);
 
     // Obtener todos los clientes
     router.get("/", clientes.obtenerClientes);

@@ -3,31 +3,36 @@ const { obtenerClienteByCI } = require("./clienteDAO.controller");
 const Reserva = db.reservas;
 const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
-
+const Cliente = db.clientes;
 
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearReserva = (req, res) => {
-
-    const fk_clienteid = obtenerClienteByCI(req.body.clienteCI).id; //para obtener el id del cliente
-
-    const reserva = { // Lo que viene como JSON en la solicitud del postman 
-        fecha: req.body.fecha,
-        cantidadSolicitada: req.body.cantidadSolicitada,
-        fk_restauranteid: req.body.fk_restauranteid,
-        fk_mesaid: req.body.fk_mesaid,
-        fk_clienteid: req.body.fk_clienteid,
-        horaInicio: req.body.hora_inicio,
-        horaFin: req.body.hora_fin
-    };
-    // Función que guarda la mesa en la base de datos 
-    Reserva.create(reserva).then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            mensaje: err.mensaje || "Ocurrio algun error mientras se crea la reserva."
-        });
-    });
+     //para obtener el id del cliente
+        Cliente.findOne({
+            where: {
+                cedula: req.body.clienteCI
+            }
+        }).then(data => {
+            console.log(data.id); 
+            const reserva = { // Lo que viene como JSON en la solicitud del postman 
+                fecha: req.body.fecha,
+                cantidadSolicitada: req.body.cantidadSolicitada,
+                fk_restauranteid: req.body.fk_restauranteid,
+                fk_mesaid: req.body.fk_mesaid,
+                fk_clienteid: data.id,
+                horaInicio: req.body.hora_inicio,
+                horaFin: req.body.hora_fin
+            };
+                    // Función que guarda la mesa en la base de datos 
+            Reserva.create(reserva).then(data => {
+                res.send(data);
+            }).catch(err => {
+                res.status(500).send({
+                    mensaje: err.mensaje || "Ocurrio algun error mientras se crea la reserva."
+                });
+            });
+        });    
 };
 
 exports.mesasDisponibles = (req, res) => {
