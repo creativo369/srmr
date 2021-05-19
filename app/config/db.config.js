@@ -4,9 +4,9 @@
 module.exports = {
     HOST: "localhost",
     USER: "postgres",
-    PASSWORD: "admin", // En mi caso es admin la contraseña de mi usuario postgres
+    PASSWORD: "postgres", // En mi caso es admin la contraseña de mi usuario postgres
     PORT: 5432,
-    DB: "srmrdb", // base de datos de sistema de reservas de mesas de restarurantes 
+    DB: "srmr", // base de datos de sistema de reservas de mesas de restarurantes 
     dialect: "postgres",
     // pool es opcional, se utilizará para la configuración del grupo de conexiones Sequelize: 
     pool: {
