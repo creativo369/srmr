@@ -54,21 +54,6 @@ exports.obtenerClienteByID = (req, res) => {
     });
 };
 
-exports.obtenerClienteByCI = (req, res) => {
-    const ci = req.params.cedula;
-    Cliente.findAll({
-        where: {
-            cedula: ci
-        }
-    }, include["cliente_reservas"]).then(data => {
-        if (!data.length) {
-            res.status(404).send();
-        } else {
-            res.status(200).send();
-        }
-    })
-};
-
 exports.obtenerClientes = (req, res) => {
     Cliente.findAll( include["cliente_reservas"]).then(data => {
         // console.log(data);
