@@ -9,7 +9,7 @@
     },
     "author": "Victor Gonzalez | Alex Gomez",
     "license": "ISC",
-    "proxy":"http://localhost:8080",
+    "proxy":"http://localhost:8080/",
     "dependencies": {
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",

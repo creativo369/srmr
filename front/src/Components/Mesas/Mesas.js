@@ -68,8 +68,8 @@ class Mesas extends Component {
                         return (
                             <div key={key} className="my-card" onClick={() => this.getValues({mesa}) }>
                             <li><strong>id:</strong> {mesa.id}</li>
-                            <li><strong>nombre:</strong> {mesa.name}</li>
-                            <li><strong>email:</strong> {mesa.email}</li>
+                            <li><strong>nombre:</strong> {mesa.nombre}</li>
+                            <li><strong>Capacidad:</strong> {mesa.capacidad}</li>
                             </div>
                         )
                     }) :

@@ -10,11 +10,11 @@ db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop re-sync database.");
 });
 
-var corsOptions = {
-    origin: "http://localhost:8080"
-};
+/* var corsOptions = {
+    origin: "http://localhost:8081"
+}; */
 
-app.use(cors(corsOptions));
+app.use(cors(/* corsOptions */));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
