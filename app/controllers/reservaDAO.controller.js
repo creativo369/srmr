@@ -34,7 +34,7 @@ exports.crearReserva = (req, res) => {
                 });
             });
             }else{
-                res.send(204);
+                res.status(204).send();
             }
             
         });    
