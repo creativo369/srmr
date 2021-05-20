@@ -40,7 +40,7 @@ class Registro extends Component {
             .then(response => {
                 this.setState({statusCode: response.code});
                 console.log(response);
-                if (response.status == 204){
+                if (response.status === 204){
                     console.log('No se encontro el cliente');
                     this.setState({statusCode: 204})
                 } else {
@@ -63,7 +63,7 @@ class Registro extends Component {
             .post("http://localhost:8080/clientes/", cliente)
             .then(response => {
                 console.log(response);
-                if (response.status == 200){
+                if (response.status === 200){
                     this.registrarReserva();
                 }
             }).catch(error => {
@@ -74,7 +74,7 @@ class Registro extends Component {
     render(){
         return(
             <>
-                { this.state.statusCode != '204' ? 
+                { this.state.statusCode !== '204' ? 
                     <div>
                         <label>Ingrese su CI</label>
                         <input type="number" name="ci" className="form-control" placeholder="" min="0" value={this.state.ci} onChange={this.onChangeHandler}/>

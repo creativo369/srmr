@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import axios from 'axios';
 
 import './ReservaMesa.css';
 
@@ -32,9 +29,6 @@ class ReservaMesa extends Component {
         checkboxes.forEach( box => {
             boxes.push(box.value);
         });
-
-        const min = Math.min(...boxes);
-        const max = Math.max(...boxes);
 
         let checked = [];
         
@@ -84,18 +78,6 @@ class ReservaMesa extends Component {
 
     changeDate = date => {
         this.setState({fecha: date})
-    }
-
-    a(){
-        console.log("hi");
-        const number = 1;
-        axios.get("https://jsonplaceholder.typicode.com/comments?postId=" + number)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            })
     }
 
     fetchData(){
