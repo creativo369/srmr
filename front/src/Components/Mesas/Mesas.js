@@ -42,8 +42,9 @@ class Mesas extends Component {
 
     componentDidMount() {
         console.log("fecha: " + this.formatDate(this.state.fecha));
-       
-        axios.get("http://localhost:8080/reservas?restaurante="+this.state.restaurante+"&fecha="+this.formatDate(this.state.fecha)+
+        const f = this.formatDate(this.props.fecha);
+        console.log(f);
+        axios.get("http://localhost:8080/reservas?restaurante="+this.state.restaurante+"&fecha="+f+
                     "&hora_inicio="+this.state.hora_inicio+"&hora_fin="+this.state.hora_fin)
             .then(response => {
                 console.log(response);
