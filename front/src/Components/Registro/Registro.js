@@ -40,7 +40,7 @@ class Registro extends Component {
             .then(response => {
                 this.setState({statusCode: response.code});
                 console.log(response);
-                if (response.status === 204){
+                if (response.status == 204){
                     console.log('No se encontro el cliente');
                     this.setState({statusCode: 204})
                 } else {
@@ -63,7 +63,7 @@ class Registro extends Component {
             .post("http://localhost:8080/clientes/", cliente)
             .then(response => {
                 console.log(response);
-                if (response.status === 200){
+                if (response.status == 200){
                     this.registrarReserva();
                 }
             }).catch(error => {
@@ -74,7 +74,7 @@ class Registro extends Component {
     render(){
         return(
             <>
-                { this.state.statusCode !== '204' ? 
+                { this.state.statusCode != '204' ? 
                     <div>
                         <label>Ingrese su CI</label>
                         <input type="number" name="ci" className="form-control" placeholder="" min="0" value={this.state.ci} onChange={this.onChangeHandler}/>
@@ -84,7 +84,7 @@ class Registro extends Component {
                         <div style={{marginTop:'20px'}}><h6 style={{color:'red'}}>No se encontro el cliente, cree uno para poder registrar una reserva</h6></div>
                         <div><input type="number" name="ci" className="form-control" placeholder="" min="0" value={this.state.ci} onChange={this.onChangeHandler} disabled/></div>
                         <div><input type="text" name="nombre" className="form-control" placeholder="Ingrese su nombre" min="0" onChange={this.onChangeHandler}/></div>
-                        <div><input type="text" name="apellido" className="form-control" placeholder="Ingrese su aoellido" min="0" onChange={this.onChangeHandler}/></div>
+                        <div><input type="text" name="apellido" className="form-control" placeholder="Ingrese su apellido" min="0" onChange={this.onChangeHandler}/></div>
                         <submit type="submit" className="btn btn-primary" onClick={this.crearClienteRegistrarReserva}>Crear cliente y registrar reserva</submit> 
                     </div>
                 }
