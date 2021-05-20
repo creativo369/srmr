@@ -74,7 +74,7 @@ class Registro extends Component {
     render(){
         return(
             <>
-                { this.state.statusCode !== '204' ? 
+                { this.state.statusCode !== 204 ? 
                     <div>
                         <label>Ingrese su CI</label>
                         <input type="number" name="ci" className="form-control" placeholder="" min="0" value={this.state.ci} onChange={this.onChangeHandler}/>
