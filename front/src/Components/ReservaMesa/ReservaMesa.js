@@ -50,8 +50,11 @@ class ReservaMesa extends Component {
         //let value = parseInt(e.target.value);   
         let checked = this.getChecked();
         console.log(checked)
+        
         this.min = Math.min(...checked);
         this.max = Math.max(...checked) +1;
+        // if (checked.length == 0)
+        //     this.min = 17;
 
         console.log("min:" + this.min);
         console.log("max:" + this.max);
@@ -62,6 +65,28 @@ class ReservaMesa extends Component {
                 checkbox.checked = true;
             }
         });
+
+        if (this.min !== Infinity) {
+            console.log('hola mundo');
+            if (this.min < 15) {
+                console.log(checkboxes);
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.value >= 19) {
+                        checkbox.setAttribute('disabled', true);
+                    }
+                });
+            } else if (this.min >= 19 && this.min <= 23) {
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.value <= 14) {
+                        checkbox.setAttribute('disabled', true);
+                    }
+                });
+            }
+        } else {
+            checkboxes.forEach(checkbox => {
+                checkbox.removeAttribute('disabled');
+            });
+        }
     }
 
     createCheckboxes = () => {
