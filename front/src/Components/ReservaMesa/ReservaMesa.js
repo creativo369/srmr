@@ -4,23 +4,27 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import './ReservaMesa.css';
-
 import Mesas from '../Mesas/Mesas';
 
+import axios from 'axios';
+import Loader from "react-loader-spinner";
 
 class ReservaMesa extends Component {
 
     min = null; max = null;
 
     state = {
-        idRestaurante: '',
+        restaurante: '',
         fecha: new Date(),
         mesasDisponibles:[],
         fetching:false,
+        restaurantes:[],
+        restaurantesFetched: false
     }
     
-    setIdRestaurante = (e) => {
-        this.setState({idRestaurante: parseInt(e.target.value)})
+    changeHandler = e => {
+        console.log('hola');
+        this.setState({[e.target.name]: e.target.value})
     }
 
     getChecked = () => {
@@ -31,9 +35,6 @@ class ReservaMesa extends Component {
         });
 
         let checked = [];
-        
-        // console.log("min:" + min);
-        // console.log("max:" + max);
 
         checkboxes.forEach(checkbox => {
             if (checkbox.checked ) {
@@ -47,14 +48,11 @@ class ReservaMesa extends Component {
     }
 
     checkTime = (e) => {
-        //let value = parseInt(e.target.value);   
         let checked = this.getChecked();
         console.log(checked)
         
         this.min = Math.min(...checked);
         this.max = Math.max(...checked) +1;
-        // if (checked.length == 0)
-        //     this.min = 17;
 
         console.log("min:" + this.min);
         console.log("max:" + this.max);
@@ -117,6 +115,22 @@ class ReservaMesa extends Component {
         })
     }
 
+    componentDidMount(){
+        axios
+            .get('http://localhost:8080/restaurantes')
+            .then(response => {
+                console.log(response.data);
+                this.setState({
+                    restaurantes: response.data,
+                    restaurantesFetched: true
+                })
+            })
+    }
+
+    getValues = props => {
+        this.setState({restaurante: props.rest});
+    }
+
     render () {
         
         let listaMesas;
@@ -127,7 +141,7 @@ class ReservaMesa extends Component {
             console.log('Desplegando lista de mesas...');
 
             listaMesas = <Mesas 
-                            restaurante={this.state.idRestaurante}
+                            restaurante={this.state.restaurante.id}
                             fecha={this.state.fecha}
                             hora_inicio={this.min}
                             hora_fin={this.max}
@@ -136,8 +150,31 @@ class ReservaMesa extends Component {
 
         return (
             <div className="test">
-                <div className="form-mesas">               
-                    <div><input type="number" value={this.state.idRestaurante} onChange={(e) => this.setIdRestaurante(e)} className="form-control" placeholder="id del restaurante" min="0"/></div>
+                <div className="form-mesas">
+                <div style={{maxHeight:'180px', overflowY:'scroll'}}>
+                    { this.state.restaurantesFetched ?
+                        this.state.restaurantes.map((rest, key) => {
+                            return (
+                                <div key={key} className="my-card" onClick={() => this.getValues({rest}) }>
+                                {/* <li><strong>id:</strong> {mesa.id}</li> */}
+                                <li><strong>Nombre:</strong> {rest.nombre}</li>
+                                <li><strong>Dirección:</strong> {rest.direccion}</li>
+                                </div>
+                            )
+                        }) :
+                        <Loader
+                        type="ThreeDots"
+                        color="#00BFFF"
+                        height={100}
+                        width={100}
+                        />
+                    }
+                </div>
+                <div className="selected-table">
+                    <strong>Restaurante seleccionado:</strong> {this.state.restaurante.nombre }
+                    {/* <button style={{float: 'left'}} type="button" className="btn btn-primary" onClick={()=>this.setState({confirmado: true})}>Confirmar mesa</button> */}
+                </div>
+                    {/* <div><input type="text" name="restaurante" onChange={this.changeHandler} className="form-control" placeholder="Nombre restaurante"/></div> */}
                     <div className="date-time">{this.createCheckboxes()}
                     <DatePicker className="form-control datepicker" selected={this.state.fecha} onChange={this.changeDate} /></div>    
                     <button type="button" className="btn btn-primary" onClick={() => this.setState({fetching: true})}>Buscar mesas disponibles</button>
@@ -151,7 +188,3 @@ class ReservaMesa extends Component {
 }
 
 export default ReservaMesa;
-
-
-
-// 

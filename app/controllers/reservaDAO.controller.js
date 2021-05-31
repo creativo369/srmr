@@ -16,23 +16,23 @@ exports.crearReserva = (req, res) => {
         }).then(data => {
             if(data){
                 console.log(data.id); 
-            const reserva = { // Lo que viene como JSON en la solicitud del postman 
-                fecha: req.body.fecha,
-                cantidadSolicitada: req.body.cantidadSolicitada,
-                fk_restauranteid: req.body.fk_restauranteid,
-                fk_mesaid: req.body.fk_mesaid,
-                fk_clienteid: data.id,
-                horaInicio: req.body.hora_inicio,
-                horaFin: req.body.hora_fin
-            };
-                    // Función que guarda la mesa en la base de datos 
-            Reserva.create(reserva).then(data => {
-                res.send(data);
-            }).catch(err => {
-                res.status(500).send({
-                    mensaje: err.mensaje || "Ocurrio algun error mientras se crea la reserva."
+                const reserva = { // Lo que viene como JSON en la solicitud del postman 
+                    fecha: req.body.fecha,
+                    cantidadSolicitada: req.body.cantidadSolicitada,
+                    fk_restauranteid: req.body.fk_restauranteid,
+                    fk_mesaid: req.body.fk_mesaid,
+                    fk_clienteid: data.id,
+                    horaInicio: req.body.hora_inicio,
+                    horaFin: req.body.hora_fin
+                };
+                        // Función que guarda la mesa en la base de datos 
+                Reserva.create(reserva).then(data => {
+                    res.send(data);
+                }).catch(err => {
+                    res.status(500).send({
+                        mensaje: err.mensaje || "Ocurrio algun error mientras se crea la reserva."
+                    });
                 });
-            });
             }else{
                 res.status(204).send();
             }
