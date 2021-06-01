@@ -101,7 +101,7 @@ exports.listaReservas = (req, res) => {
   const restaurante = req.query.restaurante;
   const fecha = req.query.fecha;
   //const cliente = req.query.cliente;
-  
+
   Reserva.findAll({
     where: {
       fk_restauranteid: restaurante,
