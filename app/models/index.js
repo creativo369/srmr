@@ -32,6 +32,8 @@ db.productos = require("./producto.model.js")(sequelize, Sequelize);
 db.mesas = require("./mesa.model.js")(sequelize, Sequelize);
 db.clientes = require("./cliente.model.js")(sequelize, Sequelize);
 db.reservas = require("./reserva.model.js")(sequelize, Sequelize);
+db.consumos = require("./consumo.model.js")(sequelize, Sequelize);
+db.detalleConsumo = require("./detalleConsumo.model.js")(sequelize, Sequelize);
 
 // === Establecemos las relaciones que existiesen entre las tablas o modelos. ===
 
@@ -64,6 +66,26 @@ db.categoriaProductos.hasMany(db.productos, {
   foreignKey: "fk_categoriaid",
   sourceKey: "id",
   as: "productos",
+});
+
+db.consumos.belongsTo(db.mesas, {
+  foreignKey: "fk_mesaid",
+  targetKey: "id",
+});
+
+db.consumos.belongsTo(db.clientes, {
+  foreignKey: "fk_clienteid",
+  targetKey: "id",
+});
+
+db.detalleConsumo.belongsTo(db.consumos, {
+  foreignKey: "fk_consumoid",
+  targetKey: "id",
+});
+
+db.detalleConsumo.belongsTo(db.productos, {
+  foreignKey: "fk_productoid",
+  targetKey: "id",
 });
 
 // === Exportamos nuestro base de datos con las tablas ya creadas ===
