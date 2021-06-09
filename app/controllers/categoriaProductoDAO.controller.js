@@ -15,6 +15,7 @@ const Op = db.Sequelize.Op; // Operación de consulta en la base de datos
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearCategoriaProducto = (req, res) => {
+  console.log("ENTRANDOOOOOOOOOOOOOO 2");
   const categoriaProducto = {
     // Lo que viene como JSON en la solicitud del postman
     nombre: req.body.nombre,
@@ -49,7 +50,6 @@ exports.obtenerCategoriaProductoByID = (req, res) => {
 exports.obtenerCategoriaProductos = (req, res) => {
   CategoriaProducto.findAll({ include: ["productos"] })
     .then((data) => {
-      ss;
       res.send(data);
     })
     .catch((err) => {
