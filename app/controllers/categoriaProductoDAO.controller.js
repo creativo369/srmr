@@ -49,7 +49,6 @@ exports.obtenerCategoriaProductoByID = (req, res) => {
 exports.obtenerCategoriaProductos = (req, res) => {
   CategoriaProducto.findAll({ include: ["productos"] })
     .then((data) => {
-      ss;
       res.send(data);
     })
     .catch((err) => {

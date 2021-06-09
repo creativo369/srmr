@@ -15,14 +15,14 @@ const Op = db.Sequelize.Op; // Operación de consulta en la base de datos
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearProducto = (req, res) => {
-  const Producto = {
+  const producto = {
     // Lo que viene como JSON en la solicitud del postman
     nombre: req.body.nombre,
     fk_categoriaid: req.body.categoria,
     precio: req.body.precio,
   };
   // Función que guarda la mesa en la base de datos
-  Producto.create(Producto)
+  Producto.create(producto)
     .then((data) => {
       res.send(data);
     })
