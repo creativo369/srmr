@@ -4,6 +4,7 @@ const Reserva = db.reservas;
 const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
 const Cliente = db.clientes;
+const Restaurante = db.restaurantes;
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearReserva = (req, res) => {
@@ -114,7 +115,19 @@ exports.listaReservas = (req, res) => {
     ],
   })
     .then((data) => {
-      res.send(data);
+
+      reservas = [];
+      const promises = [];
+
+      data.forEach(reserva => {
+        promises.push(getReservas(reserva));
+      })
+      
+      Promise.all(promises)
+        .then(reservas => {
+          console.log(reservas);
+          res.send(reservas);
+        })
     })
     .catch((err) => {
       res.status(500).send({
@@ -124,3 +137,40 @@ exports.listaReservas = (req, res) => {
       });
     });
 };
+
+const getReservas = async reserva => {
+
+  return new Promise(resolve => {
+    let cliente = {};
+    let restaurante = {};
+    let r = {};
+
+    Cliente.findOne({
+      where: {
+        id: reserva.fk_clienteid,
+      },
+    }).then(c => {
+      cliente = c.dataValues;
+    }).then(() => {
+      Restaurante.findOne({
+        where: {
+          id: reserva.fk_restauranteid,
+        },
+      }).then(rest => {
+        restaurante = rest.dataValues;
+      }).then(() => {
+        r = {
+          fecha: reserva.fecha,
+          cantidadSolicitada: reserva.cantidadSolicitada,
+          horaInicio: reserva.horaInicio,
+          horaFin: reserva.horaFin,
+          fk_mesaid: reserva.fk_mesaid,
+          fk_clienteid: cliente,
+          fk_restauranteid: restaurante
+        };
+        // console.log(r);
+        resolve(r);
+      })
+    })
+  })
+}

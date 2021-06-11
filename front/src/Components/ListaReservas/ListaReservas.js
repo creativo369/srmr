@@ -123,16 +123,16 @@ class ListaReservas extends Component {
                 <tbody>
                     {
                         this.state.reservas.map((reserva, key) => {
+                            // console.log(reserva);
                             return (
                                 <tr>
                                     <th scope="row">{reserva.fecha}</th>
                                     <td>{reserva.horaInicio}:00 hs</td>
                                     <td>{reserva.horaFin}:00 hs</td>
-                                    <td>{reserva.fk_restauranteid}</td>
+                                    <td>{reserva.fk_restauranteid.nombre}</td>
                                     <td>#{reserva.fk_mesaid}</td>
                                     <td>{reserva.cantidadSolicitada} personas</td>
-                                    <td>{reserva.fk_clienteid}</td>
-                                    {/* <td>{reserva.fk_clienteid}</td> */}
+                                    <td>{reserva.fk_clienteid.nombre} {reserva.fk_clienteid.apellido}</td>
                                 </tr>
                             );
                         })
