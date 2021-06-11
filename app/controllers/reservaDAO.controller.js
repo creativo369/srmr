@@ -116,7 +116,6 @@ exports.listaReservas = (req, res) => {
   })
     .then((data) => {
 
-      reservas = [];
       const promises = [];
 
       data.forEach(reserva => {
