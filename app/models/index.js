@@ -68,25 +68,44 @@ db.categoriaProductos.hasMany(db.productos, {
   as: "productos",
 });
 
-db.consumos.belongsTo(db.mesas, {
+db.mesas.hasMany(db.consumos, {
   foreignKey: "fk_mesaid",
-  targetKey: "id",
+  sourceKey: "id",
+  as: "consumos",
 });
 
-db.consumos.belongsTo(db.clientes, {
+db.clientes.hasMany(db.consumos, {
+  foreignKey: "fk_clienteid",
+  sourceKey: "id",
+  as: "consumo_cliente",
+});
+
+/* db.consumos.belongsTo(db.clientes, {
   foreignKey: "fk_clienteid",
   targetKey: "id",
+}); */
+
+db.consumos.hasMany(db.detalleConsumo, {
+  foreignKey: "fk_consumoid",
+  sourceKey: "id",
+  as: "detalle_consumos",
 });
 
-db.detalleConsumo.belongsTo(db.consumos, {
+/* db.detalleConsumo.belongsTo(db.consumos, {
   foreignKey: "fk_consumoid",
   targetKey: "id",
+}); */
+
+db.productos.hasMany(db.detalleConsumo, {
+  foreignKey: "fk_productoid",
+  sourceKey: "id",
+  as: "producto_detconsumos",
 });
 
-db.detalleConsumo.belongsTo(db.productos, {
+/* db.detalleConsumo.belongsTo(db.productos, {
   foreignKey: "fk_productoid",
   targetKey: "id",
-});
+}); */
 
 // === Exportamos nuestro base de datos con las tablas ya creadas ===
 module.exports = db;

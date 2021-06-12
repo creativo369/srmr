@@ -47,6 +47,8 @@ exports.crearCliente = (req, res) => {
 
 exports.obtenerClienteByID = (req, res) => {
   const id = req.params.id;
+  console.log(req);
+  console.log("Hola");
   Cliente.findByPk(id, include["cliente_reservas"])
     .then((data) => {
       // console.log(data);

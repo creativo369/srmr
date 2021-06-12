@@ -1,5 +1,9 @@
+const { reservas } = require("../models");
 const db = require("../models");
-const { obtenerClienteByCI } = require("./clienteDAO.controller");
+const {
+  obtenerClienteByCI,
+  obtenerClienteByID,
+} = require("./clienteDAO.controller");
 const Reserva = db.reservas;
 const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
@@ -100,8 +104,7 @@ exports.mesasDisponibles = (req, res) => {
 exports.listaReservas = (req, res) => {
   const restaurante = req.query.restaurante;
   const fecha = req.query.fecha;
-  //const cliente = req.query.cliente;
-
+  let reservas = [];
   Reserva.findAll({
     where: {
       fk_restauranteid: restaurante,
@@ -114,6 +117,44 @@ exports.listaReservas = (req, res) => {
     ],
   })
     .then((data) => {
+      console.log(data);
+
+      /*  for (reserva in reservas2) {
+        r = {
+          fecha: reserva.fecha,
+          cantidadSolicitada: reserva.cantidadSolicitada,
+          horaInicio: reserva.horaInicio,
+          horaFin: reserva.horaFin,
+          fk_mesaid: reserva.fk_mesaid,
+          // objeto cliente
+          // nombre resturante
+        };
+        obtenerClienteByID(reserva.fk_clienteid).then((c) => {
+          console.log("Hola, Mundo!");
+          console.log(c.nombre);
+          r.fk_clienteid = c;
+        });
+        reservas = [...r];
+      } */
+    }).then((datoCliente)=>{
+      /*  data.forEach((reserva) => {
+        r = {
+          fecha: reserva.fecha,
+          cantidadSolicitada: reserva.cantidadSolicitada,
+          horaInicio: reserva.horaInicio,
+          horaFin: reserva.horaFin,
+          fk_mesaid: reserva.fk_mesaid,
+          // objeto cliente
+          // nombre resturante
+        };
+        //console.log(reserva.fk_clienteid);
+        obtenerClienteByID(reserva.fk_clienteid).then((c) => {
+          console.log(c.nombre);
+          r.fk_clienteid = c;
+        });
+        reservas = [...r];
+      }); */
+      /* res.send(reservas); */
       res.send(data);
     })
     .catch((err) => {
@@ -124,3 +165,8 @@ exports.listaReservas = (req, res) => {
       });
     });
 };
+
+async function fetchingData(id) {
+  return obtenerClienteByID(id);
+  //console.log(cliente.nombre);
+}

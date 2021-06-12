@@ -7,6 +7,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     estado: {
       type: Sequelize.STRING,
+      defaultValue: "Abierto",
     },
     total: {
       type: Sequelize.BIGINT,

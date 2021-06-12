@@ -9,14 +9,18 @@
     },
     "author": "Victor Gonzalez | Alex Gomez",
     "license": "ISC",
-    "proxy":"http://localhost:8080/",
+    "proxy": "http://localhost:8080/",
     "dependencies": {
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
         "express": "^4.17.1",
+        "pdfkit": "^0.12.1",
         "pg": "^8.6.0",
         "pg-hstore": "^2.3.3",
         "pg-postgis-types": "^3.0.0",
         "sequelize": "^6.6.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
     }
 }

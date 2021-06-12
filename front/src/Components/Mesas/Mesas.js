@@ -73,7 +73,7 @@ class Mesas extends Component {
                         this.state.data.map((mesa, key) => {
                             return (
                                 <div key={key} className="my-card" onClick={() => this.getValues({mesa}) }>
-                                <li><strong>id:</strong> {mesa.id}</li>
+                                {/* <li><strong>id:</strong> {mesa.id}</li> */}
                                 <li><strong>nombre:</strong> {mesa.nombre}</li>
                                 <li><strong>Capacidad:</strong> {mesa.capacidad}</li>
                                 </div>
