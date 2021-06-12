@@ -26,10 +26,10 @@ exports.crearMesa = (req, res) => {
   };
   // Función que guarda la mesa en la base de datos
   Mesa.create(mesa)
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: err.mensaje || "Ocurrio algun error mientras se crea la mesa.",
       });
@@ -39,10 +39,10 @@ exports.crearMesa = (req, res) => {
 exports.obtenerMesaByID = (req, res) => {
   const id = req.params.id;
   Mesa.findByPk(id, { include: ["mesas_reservas"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error al obtener una mesa con el id=" + id,
       });
@@ -51,10 +51,10 @@ exports.obtenerMesaByID = (req, res) => {
 
 exports.obtenerMesas = (req, res) => {
   Mesa.findAll({ include: ["mesas_reservas"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -68,7 +68,7 @@ exports.actualizarMesaByID = (req, res) => {
   Mesa.update(req.body, {
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "Mesa fue actualizado exitosamente.",
@@ -79,7 +79,7 @@ exports.actualizarMesaByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error, no se pudo actualizar la mesa con id=" + id,
       });
@@ -92,14 +92,14 @@ exports.borrarMesaByID = (req, res) => {
   Mesa.destroy({
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "La mesa fue borrado exitosamente!",
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "No pudo ser borrado la mesa con id=" + id,
       });
@@ -111,14 +111,31 @@ exports.borrarMesas = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
+    .then(nums => {
       res.send({ mensaje: `${nums} Mesas fueron borrados exitosamente!` });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
           "Algun error ocurrio mientras fueron removidos las mesas.",
+      });
+    });
+};
+
+exports.obtenerMesasRestaurante = (req, res) => {
+  console.log("hola mundo");
+  Mesa.findAll({
+    where: {
+      fk_restauranteid: req.params.id,
+    },
+  })
+    .then(mesas => res.send(mesas))
+    .catch(err => {
+      res.status(500).send({
+        mensaje:
+          err.mensaje ||
+          "Algun error ocurrio al obtener las mesas del restaurante.",
       });
     });
 };

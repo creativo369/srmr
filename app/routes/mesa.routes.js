@@ -1,24 +1,27 @@
 module.exports = app => {
-    const mesas = require("../controllers/mesaDAO.controller.js");
-    var router = require("express").Router();
+  const mesas = require("../controllers/mesaDAO.controller.js");
+  var router = require("express").Router();
 
-    // Creamos una nueva mesa
-    router.post("/", mesas.crearMesa);
+  // Creamos una nueva mesa
+  router.post("/", mesas.crearMesa);
 
-    // Obtener una sola mesa by id 
-    router.get("/:id", mesas.obtenerMesaByID);
+  // Obtener una sola mesa by id
+  router.get("/:id", mesas.obtenerMesaByID);
 
-    // Obtener todas las mesas
-    router.get("/", mesas.obtenerMesas);
+  // Obtener todas las mesas
+  router.get("/", mesas.obtenerMesas);
 
-    // Actualizar una mesa by id 
-    router.put("/:id", mesas.actualizarMesaByID);
+  //Obtener todas las mesas de un restauruante en especifico
+  router.get("/restaurante/:id", mesas.obtenerMesasRestaurante);
 
-    // Borrar una mesa by id 
-    router.delete("/:id", mesas.borrarMesaByID);
+  // Actualizar una mesa by id
+  router.put("/:id", mesas.actualizarMesaByID);
 
-    // Borrar todas las mesas 
-    router.delete("/", mesas.borrarMesas);
+  // Borrar una mesa by id
+  router.delete("/:id", mesas.borrarMesaByID);
 
-    app.use("/mesas", router);
+  // Borrar todas las mesas
+  router.delete("/", mesas.borrarMesas);
+
+  app.use("/mesas", router);
 };

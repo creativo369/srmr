@@ -9,6 +9,7 @@ class Navbar extends Component {
             <nav className="nav">
                 <NavLink className="nav-link" exact to="/">Reserva de mesa</NavLink>
                 <NavLink className="nav-link" exact to="/lista-reservas">Lista de reservas</NavLink>
+                <NavLink className="nav-link" exact to="/consumo">Consumo</NavLink>
             </nav>
         );
     }
