@@ -7,21 +7,21 @@ module.exports = (sequelize, Sequelize) => {
     },
     estado: {
       type: Sequelize.STRING,
-      defaultValue: "Abierto",
+      defaultValue: "abierto",
     },
     total: {
       type: Sequelize.BIGINT,
     },
-    fecha_creación: {
+    fecha_creacion: {
       type: Sequelize.DATEONLY,
     },
     fecha_cierre: {
       type: Sequelize.DATEONLY,
     },
-    horaInicio: {
+    hora_creacion: {
       type: Sequelize.BIGINT,
     },
-    horaFin: {
+    hora_cierre: {
       type: Sequelize.BIGINT,
     },
   });

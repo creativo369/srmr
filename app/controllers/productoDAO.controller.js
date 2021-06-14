@@ -25,6 +25,7 @@ exports.crearProducto = (req, res) => {
   Producto.create(producto)
     .then((data) => {
       res.send(data);
+      console.log('hola mundo');
     })
     .catch((err) => {
       res.status(500).send({

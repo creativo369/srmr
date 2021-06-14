@@ -12,6 +12,8 @@
 const db = require("../models"); // importamos nuestro objeto de la base de datos
 const Mesa = db.mesas; // asignamos a una variable nuestro modelo
 const Op = db.Sequelize.Op;
+const Consumo = db.consumos;
+const DetalleConsumo = db.detalleConsumo;
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearMesa = (req, res) => {
@@ -122,3 +124,42 @@ exports.borrarMesas = (req, res) => {
       });
     });
 };
+
+exports.obtenerMesasRestaurante = (req, res) => {
+  Mesa.findAll({
+    where: {
+      fk_restauranteid: req.params.id,
+    },
+  })
+    .then((mesas) => {
+      // console.log(mesas);
+      /* const promises = [];
+      mesas.map((mesa, key) => {
+        // console.log(mesa.dataValues);
+        promises.push(getMesasConsumo(mesa.dataValues));
+      }); */
+      res.send(mesas);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        mensaje:
+          err.mensaje ||
+          "Algun error ocurrio al obtener las mesas del restaurante.",
+      });
+    });
+};
+
+/* const getMesasConsumo = async (mesa) => {
+  return new Promise((resolve) => {
+    let consumo = {};
+    let detalle = {};
+    let mesaConsumoDetalle = {};
+
+    Consumo.findOne({
+      where: {
+        fk_mesaid: mesa.id,
+      },
+    }).then((consumo) => console.log(consumo));
+  });
+};
+ */

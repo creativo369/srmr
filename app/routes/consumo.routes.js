@@ -1,11 +1,10 @@
-module.exports = app => {
-  const mesas = require("../controllers/mesaDAO.controller.js");
+module.exports = (app) => {
+  const consumo = require("../controllers/consumoDAO.controller.js");
   var router = require("express").Router();
 
-  // Creamos una nueva mesa
-  router.post("/", mesas.crearMesa);
+  router.post("/producto", consumo.crearDetalleConsumo);
 
-  // Obtener una sola mesa by id
+  /* // Obtener una sola mesa by id
   router.get("/:id", mesas.obtenerMesaByID);
 
   // Obtener todas las mesas
@@ -21,7 +20,7 @@ module.exports = app => {
   router.delete("/:id", mesas.borrarMesaByID);
 
   // Borrar todas las mesas
-  router.delete("/", mesas.borrarMesas);
+  router.delete("/", mesas.borrarMesas); */
 
-  app.use("/mesas", router);
+  app.use("/consumo", router);
 };

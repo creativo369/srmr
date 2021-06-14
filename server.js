@@ -36,6 +36,7 @@ require("./app/routes/cliente.routes.js")(app);
 require("./app/routes/reserva.routes.js")(app);
 require("./app/routes/categoriaProducto.routes.js")(app);
 require("./app/routes/producto.routes.js")(app);
+require("./app/routes/consumo.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

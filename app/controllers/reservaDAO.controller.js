@@ -4,10 +4,12 @@ const {
   obtenerClienteByCI,
   obtenerClienteByID,
 } = require("./clienteDAO.controller");
+const { crearConsumo } = require("./consumoDAO.controller");
 const Reserva = db.reservas;
 const Mesa = db.mesas;
 const Op = db.Sequelize.Op;
 const Cliente = db.clientes;
+const Restaurante = db.restaurantes;
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearReserva = (req, res) => {
@@ -29,9 +31,21 @@ exports.crearReserva = (req, res) => {
         horaInicio: req.body.hora_inicio,
         horaFin: req.body.hora_fin,
       };
+
       // Función que guarda la mesa en la base de datos
       Reserva.create(reserva)
         .then((data) => {
+          const consumo = {
+            estado: "abierto",
+            total: 0,
+            fecha_creacion: data.fecha,
+            fecha_cierre: data.fecha,
+            horaInicio: null, // pongo null, al crear un detalle de consumisión ahi recien ponga la hora en que se creo el consumo
+            horaFin: null, // lo mismo que arriba
+            fk_mesaid: data.fk_mesaid,
+            fk_clienteid: data.fk_clienteid,
+          };
+          crearConsumo(consumo);
           res.send(data);
         })
         .catch((err) => {
@@ -104,7 +118,6 @@ exports.mesasDisponibles = (req, res) => {
 exports.listaReservas = (req, res) => {
   const restaurante = req.query.restaurante;
   const fecha = req.query.fecha;
-  let reservas = [];
   Reserva.findAll({
     where: {
       fk_restauranteid: restaurante,
@@ -117,45 +130,16 @@ exports.listaReservas = (req, res) => {
     ],
   })
     .then((data) => {
-      console.log(data);
+      const promises = [];
 
-      /*  for (reserva in reservas2) {
-        r = {
-          fecha: reserva.fecha,
-          cantidadSolicitada: reserva.cantidadSolicitada,
-          horaInicio: reserva.horaInicio,
-          horaFin: reserva.horaFin,
-          fk_mesaid: reserva.fk_mesaid,
-          // objeto cliente
-          // nombre resturante
-        };
-        obtenerClienteByID(reserva.fk_clienteid).then((c) => {
-          console.log("Hola, Mundo!");
-          console.log(c.nombre);
-          r.fk_clienteid = c;
-        });
-        reservas = [...r];
-      } */
-    }).then((datoCliente)=>{
-      /*  data.forEach((reserva) => {
-        r = {
-          fecha: reserva.fecha,
-          cantidadSolicitada: reserva.cantidadSolicitada,
-          horaInicio: reserva.horaInicio,
-          horaFin: reserva.horaFin,
-          fk_mesaid: reserva.fk_mesaid,
-          // objeto cliente
-          // nombre resturante
-        };
-        //console.log(reserva.fk_clienteid);
-        obtenerClienteByID(reserva.fk_clienteid).then((c) => {
-          console.log(c.nombre);
-          r.fk_clienteid = c;
-        });
-        reservas = [...r];
-      }); */
-      /* res.send(reservas); */
-      res.send(data);
+      data.forEach((reserva) => {
+        promises.push(getReservas(reserva));
+      });
+
+      Promise.all(promises).then((reservas) => {
+        console.log(reservas);
+        res.send(reservas);
+      });
     })
     .catch((err) => {
       res.status(500).send({
@@ -166,7 +150,42 @@ exports.listaReservas = (req, res) => {
     });
 };
 
-async function fetchingData(id) {
-  return obtenerClienteByID(id);
-  //console.log(cliente.nombre);
-}
+const getReservas = async (reserva) => {
+  return new Promise((resolve) => {
+    let cliente = {};
+    let restaurante = {};
+    let r = {};
+
+    Cliente.findOne({
+      where: {
+        id: reserva.fk_clienteid,
+      },
+    })
+      .then((c) => {
+        cliente = c.dataValues;
+      })
+      .then(() => {
+        Restaurante.findOne({
+          where: {
+            id: reserva.fk_restauranteid,
+          },
+        })
+          .then((rest) => {
+            restaurante = rest.dataValues;
+          })
+          .then(() => {
+            r = {
+              fecha: reserva.fecha,
+              cantidadSolicitada: reserva.cantidadSolicitada,
+              horaInicio: reserva.horaInicio,
+              horaFin: reserva.horaFin,
+              fk_mesaid: reserva.fk_mesaid,
+              fk_clienteid: cliente,
+              fk_restauranteid: restaurante,
+            };
+            // console.log(r);
+            resolve(r);
+          });
+      });
+  });
+};
