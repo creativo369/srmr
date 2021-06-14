@@ -19,10 +19,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATEONLY,
     },
     hora_creacion: {
-      type: Sequelize.BIGINT,
+      type: Sequelize.STRING,
     },
     hora_cierre: {
-      type: Sequelize.BIGINT,
+      type: Sequelize.STRING,
     },
   });
   return Consumo;

@@ -2,14 +2,16 @@ const db = require("../models"); // importamos nuestro objeto de la base de dato
 const Consumo = db.consumos; // asignamos a una variable nuestro modelo
 const DetalleConsumo = db.detalleConsumo; // asignamos a una variable nuestro modelo
 const Op = db.Sequelize.Op; // Operación de consulta en la base de datos
+const Producto = db.productos; // // asignamos a una variable nuestro modelo
+const Cliente = db.clientes;
 
-exports.crearConsumo = (consumo) => {
+exports.crearConsumo = consumo => {
   Consumo.create(consumo)
-    .then((data) => {
+    .then(data => {
       // console.log(data);
       res.status(200).send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -19,9 +21,9 @@ exports.crearConsumo = (consumo) => {
 };
 
 exports.obtenerConsumoMesa = (req, res) => {
-  const id_mesa = req.query.idm; // id de la mesa
-  const id_cliente = req.query.idc;
-  const datos_consumo = {};
+  const id_mesa = req.body.idm; // id de la mesa
+  const id_cliente = req.body.idc;
+  let datos_consumo = {};
   Consumo.findOne({
     where: {
       estado: "abierto",
@@ -29,15 +31,15 @@ exports.obtenerConsumoMesa = (req, res) => {
       fk_clienteid: id_cliente,
     },
   })
-    .then((data) => {
+    .then(data => {
       // console.log(data);
-      getCliente(data.fk_clienteid).then((cliente) => {
+      getCliente(data.fk_clienteid).then(cliente => {
         datos_consumo = {
           estado: data.estado,
           total: data.total,
           fecha_creacion: data.fecha_creacion,
           fecha_cierre: data.fecha_cierre,
-          hora_inicio: data.hora_inicio,
+          hora_creacion: data.hora_creacion,
           hora_cierre: data.hora_cierre,
           fk_mesid: data.fk_mesid,
           fk_clienteid: cliente,
@@ -45,7 +47,7 @@ exports.obtenerConsumoMesa = (req, res) => {
         res.send(datos_consumo);
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           "Ocurrio un error al obtener el consumo de la mesa con el id = " + id,
@@ -53,12 +55,12 @@ exports.obtenerConsumoMesa = (req, res) => {
     });
 };
 
-actualizarConsumoByID = (id_consumo) => {
+actualizarConsumoByID = id_consumo => {
   Consumo.update(req.body, {
     // solo recibimos para cambiar el cliente
     where: { id: id }, // id del consumo
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "Se cambio el cliente exitosamente.",
@@ -69,7 +71,7 @@ actualizarConsumoByID = (id_consumo) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Ocurrio un error mientras se trata de cambiar de cliente",
       });
@@ -82,18 +84,71 @@ exports.crearDetalleConsumo = (req, res) => {
     fk_consumoid: req.body.consumoid, // aqui agregamos el id del consumo y id del producto que recibimos por frontend
     fk_productoid: req.body.productoid,
   };
+
+  sumaTotalConsumo(detalleCon);
+
   DetalleConsumo.create(detalleCon)
-    .then((data) => {
+    .then(data => {
       // console.log(data);
       res.status(200).send();
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
           "Ocurrio algun error mientras se creaba el detalle de un consumo. Eso es todo lo que sabemos!",
       });
     });
+};
+
+const sumaTotalConsumo = detalleConsumo => {
+  console.log("Sumando el producto");
+
+  const cantidad = detalleConsumo.cantidad;
+  const consumoid = detalleConsumo.fk_consumoid;
+  const productoid = detalleConsumo.fk_productoid;
+
+  Producto.findOne({
+    where: {
+      id: productoid,
+    },
+  }).then(producto => {
+    const precio = producto.precio;
+    let precioParcial = precio * cantidad;
+    Consumo.findOne({
+      where: {
+        id: consumoid,
+      },
+    }).then(consumo => {
+      let suma = parseInt(consumo.total) + parseInt(precioParcial);
+      let today = new Date();
+      let horaCreacion =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      console.log("Seteando el valor de la suma y la hora de creacion");
+      // console.log(consumo);
+      // console.log(horaCreacion);
+      if (consumo.hora_creacion === null) {
+        Consumo.update(
+          {
+            total: suma,
+            hora_creacion: horaCreacion,
+          },
+          {
+            where: { id: consumoid },
+          }
+        );
+      } else {
+        Consumo.update(
+          {
+            total: suma,
+          },
+          {
+            where: { id: consumoid },
+          }
+        );
+      }
+    });
+  });
 };
 
 exports.actualizarConsumoByID = (req, res) => {
@@ -105,7 +160,7 @@ exports.actualizarConsumoByID = (req, res) => {
       where: { id: id }, // id del consumo
     }
   )
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "Se cambio el cliente exitosamente.",
@@ -116,23 +171,25 @@ exports.actualizarConsumoByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Ocurrio un error mientras se trata de cambiar de cliente",
       });
     });
 };
 
-const PDFGenerator = require("pdfkit");
-const fs = require("fs");
+// const PDFGenerator = require("pdfkit");
+// const fs = require("fs");
 
 exports.cerrarConsumoByID = (req, res) => {
   const id = req.params.id;
-  Consumo.update(req.body, {
-    // solo recibimos para cambiar el estado
-    where: { id: id }, // id del consumo
-  })
-    .then((num) => {
+  Consumo.update(
+    { estado: "cerrado" },
+    {
+      where: { id: id }, // id del consumo
+    }
+  )
+    .then(num => {
       if (num == 1) {
         // Generamos el ticket pdf
         obtenerConsumoMesa();
@@ -157,22 +214,22 @@ exports.cerrarConsumoByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Ocurrio un error mientras se trata de cambiar de cliente",
       });
     });
 };
 
-const getCliente = async (id_cliente) => {
-  return new Promise((resolve) => {
+const getCliente = async id_cliente => {
+  return new Promise(resolve => {
     let cliente = {};
     Cliente.findOne({
       where: {
         id: id_cliente,
       },
     })
-      .then((c) => {
+      .then(c => {
         cliente = c.dataValues;
       })
       .then(() => {
@@ -182,15 +239,15 @@ const getCliente = async (id_cliente) => {
   });
 };
 
-const getTotal = async (id_consumo) => {
-  return new Promise((resolve) => {
+const getTotal = async id_consumo => {
+  return new Promise(resolve => {
     let total_consumo;
     Cliente.findOne({
       where: {
         id: id_cliente,
       },
     })
-      .then((c) => {
+      .then(c => {
         cliente = c.dataValues;
       })
       .then(() => {

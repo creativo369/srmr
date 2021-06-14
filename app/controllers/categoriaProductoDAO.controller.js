@@ -15,17 +15,17 @@ const Op = db.Sequelize.Op; // Operación de consulta en la base de datos
 
 // === Implementación del CRUD ( POST, GET, PUT, DELETE ) ===
 exports.crearCategoriaProducto = (req, res) => {
-  console.log("ENTRANDOOOOOOOOOOOOOO 2");
+  console.log("CATEGORIA PRODUCTOS");
   const categoriaProducto = {
     // Lo que viene como JSON en la solicitud del postman
     nombre: req.body.nombre,
   };
   // Función que guarda la mesa en la base de datos
   CategoriaProducto.create(categoriaProducto)
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -37,10 +37,10 @@ exports.crearCategoriaProducto = (req, res) => {
 exports.obtenerCategoriaProductoByID = (req, res) => {
   const id = req.params.id;
   CategoriaProducto.findByPk(id, { include: ["productos"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error al obtener la categoria de un producto con el id=" + id,
       });
@@ -49,10 +49,10 @@ exports.obtenerCategoriaProductoByID = (req, res) => {
 
 exports.obtenerCategoriaProductos = (req, res) => {
   CategoriaProducto.findAll({ include: ["productos"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -66,7 +66,7 @@ exports.actualizarCategoriaProductoByID = (req, res) => {
   CategoriaProducto.update(req.body, {
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje:
@@ -78,7 +78,7 @@ exports.actualizarCategoriaProductoByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           "Error, no se pudo actualizar el nombre de la categoria de un producto con id=" +
@@ -93,14 +93,14 @@ exports.borrarCategoriaProductoByID = (req, res) => {
   CategoriaProducto.destroy({
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "La categoria del producto fue borrado exitosamente!",
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "No pudo ser borrado la categoria de producto con id=" + id,
       });
@@ -112,12 +112,12 @@ exports.borrarCategoriaProductos = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
+    .then(nums => {
       res.send({
         mensaje: `${nums} categorias de productos fueron borrados exitosamente!`,
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||

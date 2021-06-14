@@ -22,12 +22,14 @@ exports.crearProducto = (req, res) => {
     precio: req.body.precio,
   };
   // Función que guarda la mesa en la base de datos
+  // console.log(req);
+  // console.log(producto);
   Producto.create(producto)
-    .then((data) => {
+    .then(data => {
       res.send(data);
-      console.log('hola mundo');
+      console.log("hola mundo");
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje || "Ocurrio algun error mientras se crea un producto.",
@@ -38,10 +40,10 @@ exports.crearProducto = (req, res) => {
 exports.obtenerProductoByID = (req, res) => {
   const id = req.params.id;
   Producto.findByPk(id)
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error al obtener el producto con el id=" + id,
       });
@@ -50,10 +52,10 @@ exports.obtenerProductoByID = (req, res) => {
 
 exports.obtenerProductos = (req, res) => {
   Producto.findAll()
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -67,7 +69,7 @@ exports.actualizarProductoByID = (req, res) => {
   Producto.update(req.body, {
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "Producto fue actualizado exitosamente.",
@@ -78,7 +80,7 @@ exports.actualizarProductoByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error, no se pudo actualizar el producto con id=" + id,
       });
@@ -91,14 +93,14 @@ exports.borrarProductoByID = (req, res) => {
   Producto.destroy({
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "El producto fue borrado exitosamente!",
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "No pudo ser borrado el producto con id=" + id,
       });
@@ -110,12 +112,12 @@ exports.borrarProductos = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
+    .then(nums => {
       res.send({
         mensaje: `${nums} productos fueron borrados exitosamente!`,
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
