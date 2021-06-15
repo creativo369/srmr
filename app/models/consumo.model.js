@@ -24,6 +24,10 @@ module.exports = (sequelize, Sequelize) => {
     hora_cierre: {
       type: Sequelize.STRING,
     },
+    actual: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
+    },
   });
   return Consumo;
 };

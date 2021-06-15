@@ -28,10 +28,21 @@ exports.crearMesa = (req, res) => {
   };
   // Función que guarda la mesa en la base de datos
   Mesa.create(mesa)
-    .then((data) => {
-      res.send(data);
+    .then(data => {
+      const consumo = {
+        estado: "cerrado",
+        total: 0,
+        // fecha_creacion: data.fecha,
+        // fecha_cierre: data.fecha,
+        // horaInicio: null, // pongo null, al crear un detalle de consumisión ahi recien ponga la hora en que se creo el consumo
+        // horaFin: null, // lo mismo que arriba
+        fk_mesaid: data.id,
+        // fk_clienteid: null,
+      };
+
+      Consumo.create(consumo).then(() => res.send(data));
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: err.mensaje || "Ocurrio algun error mientras se crea la mesa.",
       });
@@ -41,10 +52,10 @@ exports.crearMesa = (req, res) => {
 exports.obtenerMesaByID = (req, res) => {
   const id = req.params.id;
   Mesa.findByPk(id, { include: ["mesas_reservas"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error al obtener una mesa con el id=" + id,
       });
@@ -53,10 +64,10 @@ exports.obtenerMesaByID = (req, res) => {
 
 exports.obtenerMesas = (req, res) => {
   Mesa.findAll({ include: ["mesas_reservas"] })
-    .then((data) => {
+    .then(data => {
       res.send(data);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -70,7 +81,7 @@ exports.actualizarMesaByID = (req, res) => {
   Mesa.update(req.body, {
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "Mesa fue actualizado exitosamente.",
@@ -81,7 +92,7 @@ exports.actualizarMesaByID = (req, res) => {
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "Error, no se pudo actualizar la mesa con id=" + id,
       });
@@ -94,14 +105,14 @@ exports.borrarMesaByID = (req, res) => {
   Mesa.destroy({
     where: { id: id },
   })
-    .then((num) => {
+    .then(num => {
       if (num == 1) {
         res.send({
           mensaje: "La mesa fue borrado exitosamente!",
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje: "No pudo ser borrado la mesa con id=" + id,
       });
@@ -113,10 +124,10 @@ exports.borrarMesas = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
+    .then(nums => {
       res.send({ mensaje: `${nums} Mesas fueron borrados exitosamente!` });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||
@@ -131,7 +142,7 @@ exports.obtenerMesasRestaurante = (req, res) => {
       fk_restauranteid: req.params.id,
     },
   })
-    .then((mesas) => {
+    .then(mesas => {
       // console.log(mesas);
       /* const promises = [];
       mesas.map((mesa, key) => {
@@ -140,7 +151,7 @@ exports.obtenerMesasRestaurante = (req, res) => {
       }); */
       res.send(mesas);
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
         mensaje:
           err.mensaje ||

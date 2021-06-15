@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import ListaMesas from "../Mesas/ListaMesas";
+import DetallesConsumo from "./DetallesConsumo";
 
 class Consumo extends Component {
   state = {
@@ -10,24 +11,15 @@ class Consumo extends Component {
     restaurantes: [],
     restaurantesFetched: false,
     fetching: false,
+    mesa: {},
   };
 
-  componentDidMount() {
-    axios.get("http://localhost:8080/restaurantes").then((response) => {
-      console.log(response.data);
-      this.setState({
-        restaurantes: response.data,
-        restaurantesFetched: true,
-      });
-    });
-  }
-
-  getValues = (props) => {
+  getValues = props => {
     this.setState({ restaurante: props.rest });
   };
 
   componentDidMount() {
-    axios.get("http://localhost:8080/restaurantes").then((response) => {
+    axios.get("http://localhost:8080/restaurantes").then(response => {
       console.log(response.data);
       this.setState({
         restaurantes: response.data,
@@ -35,6 +27,14 @@ class Consumo extends Component {
       });
     });
   }
+
+  // http://localhost:8080/consumo
+
+  getData = mesa => {
+    console.log("Desde consumo");
+    console.log(mesa);
+    this.setState({ mesa: mesa });
+  };
 
   render() {
     let listaMesas;
@@ -44,7 +44,12 @@ class Consumo extends Component {
     } else {
       console.log("Desplegando lista de mesas...");
 
-      listaMesas = <ListaMesas restaurante={this.state.restaurante.id} />;
+      listaMesas = (
+        <ListaMesas
+          restaurante={this.state.restaurante.id}
+          sendData={this.getData}
+        />
+      );
     }
 
     return (
@@ -91,6 +96,14 @@ class Consumo extends Component {
           </button>
         </div>
         <div className="lista-mesas">{listaMesas}</div>
+
+        <div>
+          {Object.keys(this.state.mesa).length !== 0 ? (
+            <DetallesConsumo mesa={this.state.mesa} />
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     );
   }

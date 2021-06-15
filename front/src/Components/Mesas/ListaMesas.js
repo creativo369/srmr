@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import DetallesConsumo from "../Consumo/DetallesConsumo";
+
 import axios from "axios";
 import Loader from "react-loader-spinner";
 
@@ -26,8 +28,14 @@ class ListaMesas extends Component {
   }
 
   getValues = props => {
-    console.log(props.mesa);
+    // console.log(props.mesa);
     this.setState({ mesa: props.mesa });
+  };
+
+  buttonClicked = () => {
+    console.log("desde lista mesas");
+    console.log(this.state.mesa);
+    this.props.sendData(this.state.mesa);
   };
 
   render() {
@@ -64,23 +72,11 @@ class ListaMesas extends Component {
             style={{ float: "right" }}
             type="button"
             className="btn btn-primary"
-            onClick={() => this.setState({ confirmarMesa: true })}
+            onClick={this.buttonClicked}
           >
             Confirmar mesa
           </button>
         </div>
-        {/* {this.state.confirmado === true ? (
-          <Registro
-            hora_inicio={this.props.hora_inicio}
-            hora_fin={this.props.hora_fin}
-            restauranteid={this.props.restaurante}
-            fecha={this.state.fecha}
-            mesaid={this.selectedTable}
-            cantidad={this.state.cantidadMesa}
-          />
-        ) : (
-          <></>
-        )} */}
       </div>
     );
   }

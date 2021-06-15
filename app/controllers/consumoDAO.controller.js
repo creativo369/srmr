@@ -6,6 +6,8 @@ const Producto = db.productos; // // asignamos a una variable nuestro modelo
 const Cliente = db.clientes;
 
 exports.crearConsumo = consumo => {
+  // console.log("hello");
+  console.log(consumo);
   Consumo.create(consumo)
     .then(data => {
       // console.log(data);
@@ -21,31 +23,39 @@ exports.crearConsumo = consumo => {
 };
 
 exports.obtenerConsumoMesa = (req, res) => {
-  const id_mesa = req.body.idm; // id de la mesa
-  const id_cliente = req.body.idc;
+  const id_mesa = req.params.id; // id de la mesa
+  // const id_cliente = req.body.idc;
   let datos_consumo = {};
   Consumo.findOne({
     where: {
-      estado: "abierto",
+      // estado: "abierto", //ABIERTO es cuando se esta comiendo en la mesa, CERRADO es cuando no se esta comiendo en la mesa
       fk_mesaid: id_mesa,
-      fk_clienteid: id_cliente,
+      // actual: true,
+      // fk_clienteid: id_cliente,
     },
   })
     .then(data => {
       // console.log(data);
-      getCliente(data.fk_clienteid).then(cliente => {
-        datos_consumo = {
-          estado: data.estado,
-          total: data.total,
-          fecha_creacion: data.fecha_creacion,
-          fecha_cierre: data.fecha_cierre,
-          hora_creacion: data.hora_creacion,
-          hora_cierre: data.hora_cierre,
-          fk_mesid: data.fk_mesid,
-          fk_clienteid: cliente,
-        };
-        res.send(datos_consumo);
-      });
+      getCliente(data.fk_clienteid)
+        .then(cliente => {
+          datos_consumo = {
+            id: data.id,
+            estado: data.estado,
+            total: data.total,
+            fecha_creacion: data.fecha_creacion,
+            fecha_cierre: data.fecha_cierre,
+            hora_creacion: data.hora_creacion,
+            hora_cierre: data.hora_cierre,
+            fk_mesid: data.fk_mesid,
+            fk_clienteid: cliente,
+          };
+          console.log("not catching");
+          res.send(datos_consumo);
+        })
+        .catch(() => {
+          console.log("catching");
+          res.send(data);
+        });
     })
     .catch(err => {
       res.status(500).send({
@@ -240,7 +250,7 @@ const getCliente = async id_cliente => {
 };
 
 const getTotal = async id_consumo => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     let total_consumo;
     Cliente.findOne({
       where: {

@@ -8,7 +8,7 @@ module.exports = app => {
   // router.get("/:id", mesas.obtenerMesaByID);
 
   // Obtener todas las mesas
-  router.get("/", consumo.obtenerConsumoMesa);
+  router.get("/:id", consumo.obtenerConsumoMesa);
 
   //Obtener todas las mesas de un restauruante en especifico
   // router.get("/restaurante/:id", mesas.obtenerMesasRestaurante);
